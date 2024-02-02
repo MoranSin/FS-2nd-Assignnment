@@ -1,0 +1,18 @@
+{
+  "reports": [
+    {
+      "id": 1,
+      "name": "Hurricane",
+      "location": "Florida",
+      "deathCount": 10,
+      "damage": "Big"
+    },
+    {
+      "id": 2,
+      "name": "Earthquake",
+      "location": "Los Angeles",
+      "deathCount": 129,
+      "damage": "Big"
+    }
+  ]
+}
