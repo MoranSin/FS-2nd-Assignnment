@@ -1,11 +1,11 @@
-const localStorage = require('../data/localStorage');
+const LocalStorage = require('../data/localStorage');
 const mongoStorage = require('../data/mongoStorage');
 
 module.exports = class reportsRepository{
     constructor() {
         if (process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASS) {
             this.storage = new mongoStorage('report');
-        } else { this.storage = new localStorage('report'); }
+        } else { this.storage = new LocalStorage('reports'); }
     }
 
     find() {
