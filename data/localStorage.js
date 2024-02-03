@@ -23,13 +23,12 @@ module.exports = class LocalStorage extends EventEmitter {
         };
     }
 
-    find () {
+    finds () {
         return Promise.resolve(this.storage.data);
     }
 
     retrieve (id) {
         return Promise.resolve(this.storage.data.find(item => item.id === id));
-
     }
 
     create (data) {

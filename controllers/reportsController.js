@@ -23,22 +23,23 @@ exports.reportsController = {
     },
 
     async addReport(req, res) {
-        const { body:order } = req;
+        // const { body:report } = req;
+        const report = req.body;
         const result = {
             status: 200,
             message: '',
-            data: await reports.create(order)
+            data: await reports.create(report)
         };
         res.status(result.status);
         res.json(result.message || result.data);
     },
 
     async updateReport(req, res) {
-        const {body:order, params:{id}} = req;
+        const {body:report, params:{id}} = req;
         const result = {
             status: 200,
             message: '',
-            data: await reports.update(id, order)
+            data: await reports.update(id, report)
         };
         res.status(result.status);
         res.json(result.message || result.data);

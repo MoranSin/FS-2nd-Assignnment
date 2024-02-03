@@ -3,13 +3,15 @@ const mongoStorage = require('../data/mongoStorage');
 
 module.exports = class reportsRepository{
     constructor() {
-        if (process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASS) {
-            this.storage = new mongoStorage('report');
-        } else { this.storage = new LocalStorage('reports'); }
+        // if (process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASS) {
+        //     this.storage = new mongoStorage('report');
+        // } else {
+            this.storage = new LocalStorage('reports');
+        // }
     }
 
     find() {
-        return this.storage.find();
+        return this.storage.finds();
     }
 
     retrieve(id) {
