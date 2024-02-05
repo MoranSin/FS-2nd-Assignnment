@@ -1,32 +1,25 @@
-const LocalStorage = require('../data/localStorage');
-const mongoStorage = require('../data/mongoStorage');
+const MongoStorage = require('../data/mongoStorage')
 
-module.exports = class reportsRepository{
-    constructor() {
-        // if (process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASS) {
-        //     this.storage = new mongoStorage('report');
-        // } else {
-            this.storage = new LocalStorage('reports');
-        // }
-    }
+module.exports = class reportsRepository {
+  constructor () { this.storage = new MongoStorage('report') }
 
-    find() {
-        return this.storage.finds();
-    }
+  find () {
+    return this.storage.find()
+  }
 
-    retrieve(id) {
-        return this.storage.retrieve(id);
-    }
+  retrieve (id) {
+    return this.storage.retrieve(id)
+  }
 
-    create(data) {
-        return this.storage.create(data);
-    }
+  create (data) {
+    return this.storage.create(data)
+  }
 
-    update(id, data) {
-        return this.storage.update(id, data);
-    }
+  update (id, data) {
+    return this.storage.update(id, data)
+  }
 
-    delete(id) {
-        return this.storage.delete(id);
-    }
-};
+  delete (id) {
+    return this.storage.delete(id)
+  }
+}
