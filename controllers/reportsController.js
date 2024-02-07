@@ -15,7 +15,7 @@ exports.reportsController = {
       res.json(result.message || result.data)
     } catch (error) {
       res.status(error?.status || 500)
-      res.json({message: error.message})
+      res.json({ message: error.message })
     }
   },
   async getReportById (req, res) {
@@ -32,7 +32,7 @@ exports.reportsController = {
       res.json(result.message || result.data)
     } catch (error) {
       res.status(error?.status || 500)
-      res.json({message:error.message})
+      res.json({ message: error.message })
     }
   },
 
@@ -49,7 +49,7 @@ exports.reportsController = {
       res.json(result.message || result.data)
     } catch (error) {
       res.status(error?.status || 500)
-      res.json({message:error.message})
+      res.json({ message: error.message })
     }
   },
 
@@ -67,7 +67,7 @@ exports.reportsController = {
       res.json(result.message || result.data)
     } catch (error) {
       res.status(error?.status || 500)
-      res.json({message:error.message})
+      res.json({ message: error.message })
     }
   },
 
@@ -84,7 +84,7 @@ exports.reportsController = {
       res.json(result.message || result.data)
     } catch (error) {
       res.status(error?.status || 500)
-      res.json({message:error.message})
+      res.json({ message: error.message })
     }
   }
 }

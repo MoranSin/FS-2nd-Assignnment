@@ -11,10 +11,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/reports', reportsRouter)
 app.use(errorHandler)
 app.use(logger('dev'))
-// app.use((req, res) => {
-//   res.status(400).send('Something is broken!')
-// })
 
 app.listen(port, () => console.log(`Express server is running on port ${port}`))
 
-module.exports =  app; // for testing
+module.exports = app ; // for testing
