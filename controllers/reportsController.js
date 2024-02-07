@@ -1,58 +1,90 @@
 const ReportsRepository = require('../repositories/reportsRepository')
 const reports = new ReportsRepository()
+const { EntityNotFoundError, PropertyNotFoundError } = require('../errors/NotFoundError')
 
 exports.reportsController = {
   async getReports (req, res) {
-    const result = {
-      status: 200,
-      message: '',
-      data: await reports.find()
+    try {
+      const result = {
+        status: 200,
+        message: '',
+        data: await reports.find()
+      }
+      if (result.data.length === 0 || !result.data) throw new EntityNotFoundError('Reports')
+      res.status(result.status)
+      res.json(result.message || result.data)
+    } catch (error) {
+      res.status(error?.status || 500)
+      res.json({message: error.message})
     }
-    res.status(result.status)
-    res.json(result.message || result.data)
   },
   async getReportById (req, res) {
     const { id } = req.params
-    const result = {
-      status: 200,
-      message: '',
-      data: await reports.retrieve(id)
+    try {
+      if (id === ':id') throw new PropertyNotFoundError('id')
+      const result = {
+        status: 200,
+        message: '',
+        data: await reports.retrieve(id)
+      }
+      if (Object.key(result.data).length === 0 || !result.data) throw new EntityNotFoundError('Report')
+      res.status(result.status)
+      res.json(result.message || result.data)
+    } catch (error) {
+      res.status(error?.status || 500)
+      res.json({message:error.message})
     }
-    res.status(result.status)
-    res.json(result.message || result.data)
   },
 
   async addReport (req, res) {
-    // const { body:report } = req;
     const report = req.body
-    const result = {
-      status: 200,
-      message: '',
-      data: await reports.create(report)
+    try {
+      if (Object.keys(report).length === 0) throw new PropertyNotFoundError('report')
+      const result = {
+        status: 201,
+        message: '',
+        data: await reports.create(report)
+      }
+      res.status(result.status)
+      res.json(result.message || result.data)
+    } catch (error) {
+      res.status(error?.status || 500)
+      res.json({message:error.message})
     }
-    res.status(result.status)
-    res.json(result.message || result.data)
   },
 
   async updateReport (req, res) {
     const { body: report, params: { id } } = req
-    const result = {
-      status: 200,
-      message: '',
-      data: await reports.update(id, report)
+    try {
+      if (Object.keys(report).length === 0) throw new PropertyNotFoundError('report')
+      if (id === ':id') throw new PropertyNotFoundError('id')
+      const result = {
+        status: 200,
+        message: '',
+        data: await reports.update(id, report)
+      }
+      res.status(result.status)
+      res.json(result.message || result.data)
+    } catch (error) {
+      res.status(error?.status || 500)
+      res.json({message:error.message})
     }
-    res.status(result.status)
-    res.json(result.message || result.data)
   },
 
   async deleteReport (req, res) {
     const { id } = req.params
-    const result = {
-      status: 200,
-      message: '',
-      data: await reports.delete(id)
+    try {
+      if (id === ':id') throw new PropertyNotFoundError('id')
+      const result = {
+        status: 200,
+        message: '',
+        data: await reports.delete(id)
+      }
+      res.status(result.status)
+      res.json(result.message || result.data)
+    } catch (error) {
+      res.status(error?.status || 500)
+      res.json({message:error.message})
     }
-    res.status(result.status)
-    res.json(result.message || result.data)
   }
 }

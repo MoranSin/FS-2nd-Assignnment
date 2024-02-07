@@ -28,6 +28,7 @@ module.exports = class mongoStorage extends EventEmitter {
   }
 
   create (data) {
+    if (data === undefined) throw new Error('Data is undefined')
     const newEntity = new this.Model(data)
     newEntity.save()
   }
