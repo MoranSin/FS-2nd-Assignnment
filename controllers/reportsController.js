@@ -45,6 +45,7 @@ exports.reportsController = {
         message: '',
         data: await reports.create(report)
       }
+      if (!result.data) throw new Error('Error creating report')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
@@ -63,6 +64,7 @@ exports.reportsController = {
         message: '',
         data: await reports.update(id, report)
       }
+      if (!result.data) throw new Error('Error updating report')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
@@ -80,6 +82,7 @@ exports.reportsController = {
         message: '',
         data: await reports.delete(id)
       }
+      if (!result.data) throw new Error('Error deleting report')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
