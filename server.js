@@ -14,4 +14,4 @@ app.use(logger('dev'))
 
 app.listen(port, () => console.log(`Express server is running on port ${port}`))
 
-module.exports = app ; // for testing
+module.exports = app // for testing

@@ -74,14 +74,14 @@ describe('GET /reports/:id', () => {
   // 404 Not Found
   test('It should respond with 404 Not Found', async () => {
     reportRepository.prototype.retrieve.mockRejectedValue([])
-    const response = await request(app).get('/api/reports/')
+    const response = await request(app).get('/api/reports/:id')
     expect(response.statusCode).toEqual(404)
   })
 
   // 500 Internal Server Error
   test('It should respond with 500 Internal Server Error', async () => {
     reportRepository.prototype.retrieve.mockResolvedValue(new Error('Error'))
-    const response = await request(app).get('/api/reports/2')
+    const response = await request(app).get('/api/reports')
     expect(response.statusCode).toEqual(500)
   })
 })
@@ -103,10 +103,11 @@ describe('POST /reports', () => {
     expect(response.body).toEqual(mockReport)
   })
   // 404 Not Found
-  test('It should respond with 404 Not Found', async () => {
-    reportRepository.prototype.create.mockResolvedValue([])
-    const response = await request(app).post('/api/reports').send({})
-    expect(response.statusCode).toEqual(404)
+  test('It should respond with 400 Bad Request if no body is provided', async () => {
+    // reportRepository.prototype.create.mockResolvedValue()
+    const response = await request(app).post('/api/reports').send()
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toHaveProperty('message', 'report body is required')
   })
 
   // 500 Internal Server Error

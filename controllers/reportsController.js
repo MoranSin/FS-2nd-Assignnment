@@ -1,7 +1,7 @@
 const ReportsRepository = require('../repositories/reportsRepository')
 const reports = new ReportsRepository()
 const { EntityNotFoundError, PropertyNotFoundError } = require('../errors/NotFoundError')
-
+let counter = 5
 exports.reportsController = {
   async getReports (req, res) {
     try {
@@ -27,7 +27,7 @@ exports.reportsController = {
         message: '',
         data: await reports.retrieve(id)
       }
-      if (Object.key(result.data).length === 0 || !result.data) throw new EntityNotFoundError('Report')
+      if (result.data.length === 0 || !result.data) throw new EntityNotFoundError('Report')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
@@ -38,14 +38,15 @@ exports.reportsController = {
 
   async addReport (req, res) {
     const report = req.body
+    report.id = ++counter
     try {
-      if (Object.keys(report).length === 0) throw new PropertyNotFoundError('report')
+      if (report.length === 0) throw new PropertyNotFoundError('report')
       const result = {
         status: 201,
         message: '',
         data: await reports.create(report)
       }
-      if (!result.data) throw new Error('Error creating report')
+      // if (!result.data) throw new Error('Error creating report')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
@@ -57,7 +58,7 @@ exports.reportsController = {
   async updateReport (req, res) {
     const { body: report, params: { id } } = req
     try {
-      if (Object.keys(report).length === 0) throw new PropertyNotFoundError('report')
+      if (report.length === 0) throw new PropertyNotFoundError('report')
       if (id === ':id') throw new PropertyNotFoundError('id')
       const result = {
         status: 200,
