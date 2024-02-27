@@ -1,5 +1,5 @@
 const { findReports, retrieveReport, createReport, updateReport, deleteReport } = require('../repositories/reportsRepository')
-const { EntityNotFoundError, PropertyNotFoundError, BadRequestError } = require('../Errors/errors')
+const { EntityNotFoundError, PropertyNotFoundError, BadRequestError } = require('../errors/errors')
 
 // let counter = 5
 exports.reportsController = {
