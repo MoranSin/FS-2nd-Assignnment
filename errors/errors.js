@@ -22,7 +22,25 @@ class PropertyNotFoundError extends NotFound {
   }
 }
 
+class BadRequestError extends Error {
+  constructor (element) {
+    super(`please provide: ${element} in the correct format`)
+    this.name = 'BadRequestError'
+    this.status = 400
+  }
+}
+
+class DuplicateError extends Error {
+  constructor (element) {
+    super(`please provide: ${element} with unique personal number`)
+    this.name = 'DuplicateError'
+    this.status = 409
+  }
+}
+
 module.exports = {
   EntityNotFoundError,
-  PropertyNotFoundError
+  PropertyNotFoundError,
+  BadRequestError,
+  DuplicateError
 }

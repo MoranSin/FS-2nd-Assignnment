@@ -1,25 +1,15 @@
 const MongoStorage = require('../data/mongoStorage')
 
-module.exports = class reportsRepository {
-  constructor () { this.storage = new MongoStorage('report') }
+if (process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASS) { this.storage = new MongoStorage('report') }
 
-  find () {
-    return this.storage.find()
-  }
+const findReports = () => this.storage.find()
 
-  retrieve (id) {
-    return this.storage.retrieve(id)
-  }
+const retrieveReport = (id) => this.storage.retrieve({ _id: id })
 
-  create (data) {
-    return this.storage.create(data)
-  }
+const createReport = (report) => this.storage.create(report)
 
-  update (id, data) {
-    return this.storage.update(id, data)
-  }
+const updateReport = (id, report) => this.storage.update({ _id: id }, report)
 
-  delete (id) {
-    return this.storage.delete(id)
-  }
-}
+const deleteReport = (id) => this.storage.delete({ _id: id })
+
+module.exports = { findReports, retrieveReport, createReport, updateReport, deleteReport }

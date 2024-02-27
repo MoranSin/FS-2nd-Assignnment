@@ -1,94 +1,87 @@
-const ReportsRepository = require('../repositories/reportsRepository')
-const reports = new ReportsRepository()
-const { EntityNotFoundError, PropertyNotFoundError } = require('../errors/NotFoundError')
-let counter = 5
+const { findReports, retrieveReport, createReport, updateReport, deleteReport } = require('../repositories/reportsRepository')
+const { EntityNotFoundError, PropertyNotFoundError, BadRequestError } = require('../Errors/errors')
+
+// let counter = 5
 exports.reportsController = {
-  async getReports (req, res) {
+  async getReports (req, res, next) {
     try {
       const result = {
         status: 200,
         message: '',
-        data: await reports.find()
+        data: await findReports()
       }
       if (result.data.length === 0 || !result.data) throw new EntityNotFoundError('Reports')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
-      res.status(error?.status || 500)
-      res.json({ message: error.message })
+      next(error)
     }
   },
-  async getReportById (req, res) {
-    const { id } = req.params
+  async getReportById (req, res, next) {
+    const { reportId } = req.params
     try {
-      if (id === ':id') throw new PropertyNotFoundError('id')
       const result = {
         status: 200,
         message: '',
-        data: await reports.retrieve(id)
+        data: await retrieveReport(reportId)
       }
       if (result.data.length === 0 || !result.data) throw new EntityNotFoundError('Report')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
-      res.status(error?.status || 500)
-      res.json({ message: error.message })
+      next(error)
     }
   },
 
-  async addReport (req, res) {
+  async addReport (req, res, next) {
     const report = req.body
-    report.id = ++counter
+    // report.reportId = ++counter
     try {
-      if (report.length === 0) throw new PropertyNotFoundError('report')
+      if (Object.keys(req.body).length === 0) throw new BadRequestError('create')
+      const { name, location, deathCount, damage } = report
+      if (!name || !location || !deathCount || !damage) throw new PropertyNotFoundError('report - missing arguments')
       const result = {
         status: 201,
         message: '',
-        data: await reports.create(report)
+        data: await createReport(report)
       }
-      // if (!result.data) throw new Error('Error creating report')
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
-      res.status(error?.status || 500)
-      res.json({ message: error.message })
+      next(error)
     }
   },
 
-  async updateReport (req, res) {
-    const { body: report, params: { id } } = req
+  async updateReport (req, res, next) {
+    const { body: report, params: { reportId } } = req
     try {
-      if (report.length === 0) throw new PropertyNotFoundError('report')
-      if (id === ':id') throw new PropertyNotFoundError('id')
+      if (Object.keys(req.body).length === 0) throw new BadRequestError('update')
       const result = {
         status: 200,
         message: '',
-        data: await reports.update(id, report)
+        data: await updateReport(reportId, report)
       }
-      if (!result.data) throw new Error('Error updating report')
+      if (!result.data || result.data.length === 0) throw new EntityNotFoundError(`Request with id <${reportId}>`)
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
-      res.status(error?.status || 500)
-      res.json({ message: error.message })
+      next(error)
     }
   },
 
-  async deleteReport (req, res) {
-    const { id } = req.params
+  async deleteReport (req, res, next) {
+    const { reportId } = req.params
     try {
-      if (id === ':id') throw new PropertyNotFoundError('id')
       const result = {
         status: 200,
         message: '',
-        data: await reports.delete(id)
+        data: await deleteReport(reportId)
       }
-      if (!result.data) throw new Error('Error deleting report')
+      if (!result.data || result.data.length === 0) throw new EntityNotFoundError(`Request with id <${reportId}>`)
       res.status(result.status)
       res.json(result.message || result.data)
     } catch (error) {
-      res.status(error?.status || 500)
-      res.json({ message: error.message })
+      next(error)
     }
   }
 }

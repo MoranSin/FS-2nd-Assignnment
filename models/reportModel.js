@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 const reportSchema = new Schema({
-  id: { type: Number },
+  // id: { type: Number },
   name: { type: String },
   location: { type: String },
   deathCount: { type: Number },

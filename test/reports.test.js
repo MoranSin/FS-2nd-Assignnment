@@ -32,7 +32,7 @@ describe('GET /reports', () => {
         damage: 'big'
       }
     ]
-    reportRepository.prototype.find.mockResolvedValue(mockReports)
+    reportRepository.findReports.mockResolvedValue(mockReports)
     const response = await request(app).get('/api/reports')
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual(mockReports)
@@ -40,14 +40,14 @@ describe('GET /reports', () => {
 
   // 404 Not Found
   test('It should respond with 404 Not Found', async () => {
-    reportRepository.prototype.find.mockResolvedValue([])
+    reportRepository.findReports.mockResolvedValue([])
     const response = await request(app).get('/api/reports/')
     expect(response.statusCode).toEqual(404)
   })
 
   // 500 Internal Server Error
   test('It should respond with 500 Internal Server Error', async () => {
-    reportRepository.prototype.find.mockRejectedValue(new Error('Error'))
+    reportRepository.findReports.mockRejectedValue(new Error('Error'))
     const response = await request(app).get('/api/reports')
     expect(response.statusCode).toEqual(500)
   })
@@ -65,7 +65,7 @@ describe('GET /reports/:id', () => {
       deathCount: 129,
       damage: 'Big'
     }
-    reportRepository.prototype.retrieve.mockResolvedValue(mockReport)
+    reportRepository.retrieveReport.mockResolvedValue(mockReport)
     const response = await request(app).get('/api/reports/2')
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual(mockReport)
@@ -73,14 +73,14 @@ describe('GET /reports/:id', () => {
 
   // 404 Not Found
   test('It should respond with 404 Not Found', async () => {
-    reportRepository.prototype.retrieve.mockRejectedValue([])
-    const response = await request(app).get('/api/reports/:id')
+    reportRepository.retrieveReport.mockRejectedValue([])
+    const response = await request(app).get('/api/reports/677')
     expect(response.statusCode).toEqual(404)
   })
 
   // 500 Internal Server Error
   test('It should respond with 500 Internal Server Error', async () => {
-    reportRepository.prototype.retrieve.mockResolvedValue(new Error('Error'))
+    reportRepository.retrieveReport.mockResolvedValue(new Error('Error'))
     const response = await request(app).get('/api/reports')
     expect(response.statusCode).toEqual(500)
   })
@@ -97,7 +97,7 @@ describe('POST /reports', () => {
       deathCount: 7,
       damage: 'Big'
     }
-    reportRepository.prototype.create.mockResolvedValue(mockReport)
+    reportRepository.createReport.mockResolvedValue(mockReport)
     const response = await request(app).post('/api/reports').send(mockReport)
     expect(response.statusCode).toEqual(201)
     expect(response.body).toEqual(mockReport)
@@ -119,7 +119,7 @@ describe('POST /reports', () => {
       deathCount: 7,
       damage: 'Big'
     }
-    reportRepository.prototype.create.mockRejectedValue(new Error('Error'))
+    reportRepository.createReport.mockRejectedValue(new Error('Error'))
     const response = await request(app).post('/api/reports').send(mockReport)
     expect(response.statusCode).toEqual(500)
   })
@@ -131,13 +131,13 @@ describe('PUT /reports/:id', () => {
     const mockUpdate = {
       name: 'Hurricane'
     }
-    reportRepository.prototype.update.mockResolvedValue(mockUpdate)
+    reportRepository.updateReport.mockResolvedValue(mockUpdate)
     const response = await request(app).put('/api/reports/1').send(mockUpdate)
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual(mockUpdate)
   })
   test('It should respond with 404 Not Found', async () => {
-    reportRepository.prototype.update.mockResolvedValue([])
+    reportRepository.updateReport.mockResolvedValue([])
     const response = await request(app).put('/api/reports').send({})
     expect(response.statusCode).toEqual(404)
   })
@@ -145,7 +145,7 @@ describe('PUT /reports/:id', () => {
     const mockUpdate = {
       name: 'Hurricane'
     }
-    reportRepository.prototype.update.mockRejectedValue(new Error('Error'))
+    reportRepository.updateReport.mockRejectedValue(new Error('Error'))
     const response = await request(app).put('/api/reports/4').send(mockUpdate)
     expect(response.statusCode).toEqual(500)
   })
@@ -161,18 +161,18 @@ describe('DELETE /reports/:id', () => {
       deathCount: 7,
       damage: 'Big'
     }
-    reportRepository.prototype.delete.mockResolvedValue(mockDelete)
+    reportRepository.deleteReport.mockResolvedValue(mockDelete)
     const response = await request(app).delete('/api/reports/3')
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual(mockDelete)
   })
   test('It should respond with 404 Not Found', async () => {
-    reportRepository.prototype.delete.mockResolvedValue([])
+    reportRepository.deleteReport.mockResolvedValue([])
     const response = await request(app).delete('/api/reports/')
     expect(response.statusCode).toEqual(404)
   })
   test('It should respond with 500 Internal Server Error', async () => {
-    reportRepository.prototype.delete.mockRejectedValue(new Error('Error'))
+    reportRepository.deleteReport.mockRejectedValue(new Error('Error'))
     const response = await request(app).delete('/api/reports/3')
     expect(response.statusCode).toEqual(500)
   })
